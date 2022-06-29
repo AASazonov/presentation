@@ -132,9 +132,7 @@ Empirical results show that most stocks and indicies do exhibit Zumbach effect. 
 \end{frame}
 
 
-
 \begin{frame}
-
 
 \begin{figure}%
     \centering
@@ -160,13 +158,13 @@ For a stronger confirmation that Zumbach effect is nonzero, we can average $\Del
 \begin{frame}
 First, let us revisit the classic Heston model. Price of the asset is given by the following process:
 $$
-&d S=\mu S d t+\sqrt{v} S d Z_{1} 
+d S=\mu S d t+\sqrt{v} S d Z_{1} 
 $$
 and the instantaneous variance is given by CIR process:
 $$
-&d v=-\lambda(v-\bar{v}) d t+\eta \sqrt{v} d Z_{2}
+dv=-\lambda(v-\bar{v}) d t+\eta \sqrt{v} d Z_{2}
 $$
-where $Z_1$ and $Z_2$ are Brownian motions and $Cov[dZ_1, dZ_2]=\rho &dt$.
+where $Z_1$ and $Z_2$ are Brownian motions and $Cov[dZ_1, dZ_2]=\rho dt$.
 
 We can simulate those processes using Milstein discretization scheme:
 $$
