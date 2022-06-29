@@ -69,6 +69,126 @@
                 Long-memory of the stochastic volatility process in stochastic volatilty models framework used to be a 
                 widely-accepted stylized fact.
             \end{frame}
+            
+            
+            
+    \section{Zumbach Effect}
+    \subsection{Description}
+    \begin{frame}
+There are empirical features of financial time series that are not well replicated by conventional stochastic volatility models. One of them is the \textbf{Zumbach effect}.
+First, consider the statistic
+$$
+\tilde{\mathcal{C}}^{(2)}(\tau)=\left\langle\left(\sigma_{t}^{2}-\left\langle\sigma_{t}^{2}\right\rangle\right) r_{t-\tau}^{2}\right\rangle
+$$
+where $r_t$ is the open to close return of day t, $\sigma_t$ is the integrated variance and $\left\langle \cdot \right\rangle$ is a sample average.
+We see that this is the covariance of integrated variance with
+past squared returns. If we substitute $\tau$ with $-\tau$, we will get 
+$$
+\tilde{\mathcal{C}}^{(2)}(-\tau)=\left\langle\left(\sigma_{t}^{2}-\left\langle\sigma_{t}^{2}\right\rangle\right) r_{t+\tau}^{2}\right\rangle,
+$$
+which is, similarly, the covariance of integrated variance with future squared returns.
+\end{frame}
+
+\begin{frame}
+Now we can consider the measure of rime-reversal assymetry (TRA) given by
+$$
+Z(\tau):=\tilde{\mathcal{C}}^{(2)}(\tau)-\tilde{\mathcal{C}}^{(2)}(-\tau), \quad \tau>0
+$$
+
+This measure is empirically found to be positive, which can be interpreted the following way: on real data, the covariance between historical squared returns and future integrated variance is greater than the covariance between historical integrated variance and
+future squared returns.
+
+On the contrary, all continuous time stochastic volatility models, such as the Heston model, obey TRS by construction and therefore cannot account for the empirical TRA of financial time series.
+
+\end{frame}
+
+\subsection{Empirical results}
+\begin{frame}
+
+For our empirical study, we use data on Russian stocks from Yahoo Finance and data on different indices from Oxford-Man Institute of Quantitative Finance Realized Library.
+
+We can convert $\tilde{\mathcal{C}}^{(2)}(\tau)$, which is a covariance, into correlation:
+$$
+\tilde{\rho}(\tau)=\frac{\tilde{C}^{(2)}(\tau)}{\sqrt{\left\langle\left(\sigma_{t}^{2}-\left\langle\sigma_{t}^{2}\right\rangle\right)^{2}\right\rangle\left\langle\left(r_{t-\tau}^{2}-\left\langle r_{t-\tau}^{2}\right\rangle\right)^{2}\right\rangle}}
+$$
+And then calculate the integrated difference as another metric to estimate the Zumbach effect with:
+$$
+\Delta(\tau)=\sum_{i=1}^{\tau}(\tilde{\rho}(i)-\tilde{\rho}(-i))
+$$
+\end{frame}
+
+\begin{frame}
+Empirical results show that most stocks and indicies do exhibit Zumbach effect. Here are some examples:
+\begin{figure}%
+    \centering
+    \subfloat[\centering $Z(\tau)$]{{\includegraphics[width=6cm]{fig/YNDX RX EquityZ.pdf} }}%
+    \qquad
+    \subfloat[\centering $\Delta(\tau)$]{{\includegraphics[width=6cm]{fig/YNDX RX EquityDelta.pdf} }}%
+    \caption{YNDX Equity}%
+    \label{fig:YNDX}%
+\end{figure}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+
+
+\begin{figure}%
+    \centering
+    \subfloat[\centering $Z(\tau)$]{{\includegraphics[width=6cm]{fig/.AEXZ.pdf} }}%
+    \qquad
+    \subfloat[\centering $\Delta(\tau)$]{{\includegraphics[width=6cm]{fig/.AEXDelta.pdf} }}%
+    \caption{AEX index}%
+    \label{fig:AEX}%
+\end{figure}
+\end{frame}
+
+\begin{frame}
+For a stronger confirmation that Zumbach effect is nonzero, we can average $\Delta(\tau)$ over all the 31 indices of Oxford-Man dataset and obtain the following plot:
+\begin{figure}
+    \centering
+    \includegraphics[width=6cm]{fig/AvgDelta.pdf}
+    \caption{Averaged $\bar{\Delta}(\tau)$}
+    \label{fig:Avg}
+\end{figure}
+\end{frame}
+
+\subsection{Heston model simulation}
+\begin{frame}
+First, let us revisit the classic Heston model. Price of the asset is given by the following process:
+$$
+&d S=\mu S d t+\sqrt{v} S d Z_{1} 
+$$
+and the instantaneous variance is given by CIR process:
+$$
+&d v=-\lambda(v-\bar{v}) d t+\eta \sqrt{v} d Z_{2}
+$$
+where $Z_1$ and $Z_2$ are Brownian motions and $Cov[dZ_1, dZ_2]=\rho &dt$.
+
+We can simulate those processes using Milstein discretization scheme:
+$$
+v_{i+1}=v_{i}-\lambda\left(v_{i}-\bar{v}\right) \Delta t+\eta \sqrt{v_{i}} \sqrt{\Delta t} Z+\frac{\eta^{2}}{4} \Delta t\left(Z^{2}-1\right)
+$$
+and then estimate Zumbach effect of this simulated data with the same methods we used before on real data.
+
+\end{frame}
+
+\begin{frame}
+After simulating 15 different paths, each path containing $\sim800000$ points, with different parameters of correlation and mean reversion, we obtain plots that generally differ from those we observed on real data.
+Again, after taking the average over all 15 paths, we obtain the following figure:
+\begin{figure}
+    \centering
+    \includegraphics[width=6cm]{fig/AvgDeltaHest.pdf}
+    \caption{Averaged $\bar{\Delta}(\tau)$ on simulated data (with comparison to real data) }
+    \label{fig:AvgH}
+\end{figure}
+Thus, we can conclude that this feature is not well replicated by classic Heston model.
+\end{frame}
+
+
 
     \section{Rough fractional stochastic volatility model}
         \subsection{Definitions}
